@@ -803,3 +803,119 @@ console.log(ben.summ()); // обращение к методу
 
 
 
+//window.location = 'http://google.ru'; // перенаправляет на сайт
+
+//window.alert('hello');
+
+//window.document // document это содержимое окна
+//window.document.getElementById('id'); // определяет в документе элемент id="id"-это объект (имеет свойства и методы)
+
+
+//setTimeout();//  запуск функции через определенное время
+//setInterval();// повторный запуск функции через определенное время
+
+
+
+window.onload = function(){ // выполнится после полной загрузки страницы
+    var wrap = document.getElementById('popup_overlay');
+    var closeB = document.getElementById('popup_close');
+    closeB.onclick = popClose;
+
+    var inP = document.getElementById('popupIn');
+    inP.onclick = popup;
+
+
+    var tIn, tOut; // в них передаются значение с помощью которых можно отменить вызов функций
+
+    function popup(){
+        wrap.style.display = 'block'; // popup_overlay - это объект а значи display это свойство
+       // wrap.style.opacity = '1'; // popup_overlay - это объект а значи opacity это свойство
+
+        popIn(1);
+    }
+
+    function popClose(){
+        popOut(0);
+    }
+
+    // функция анимации плавного появления popup
+    function popIn(x){
+        // var op = wrap.style.opacity;
+        // if(op){
+        //     parseFloat(op);
+        // }else{
+        //     op = 0;
+        // }
+
+        //тернарные операторы. условие ? выражение1 : выражение2   аналог опписан выше
+        var op = (wrap.style.opacity) ? parseFloat(wrap.style.opacity) : 0;
+
+        if(op < x){
+
+            clearInterval(tOut); // отменяет ранее запланированный выхов функции
+            op += 0.05;
+            wrap.style.opacity = op;
+
+            tIn = setTimeout(function(){
+                popIn(x);
+            }, 20);
+        }
+    }
+
+    // функция анимаци плавного исчезновения popup
+    function popOut(x){
+        var op = (wrap.style.opacity) ? parseFloat(wrap.style.opacity) : 0; // parseFloat возвращает десятичное число с правающей токой
+
+        if(op > x){
+
+            clearInterval(tIn); // отменяет заранее запланированный выхов функции
+            op -= 0.05;
+            wrap.style.opacity = op;
+
+            tOut = setTimeout(function(){
+                popOut(x);
+            }, 20);
+        }
+
+        if(wrap.style.opacity == x){
+            wrap.style.display = 'none';
+        }
+    }
+
+    setTimeout(popup, 3000);
+
+    var h1 = document.getElementById('header');
+
+    h1.onclick = function(){
+        clearTimeout(intStop); // отсновлен вызов функции смены цветов заголовок
+    }
+
+
+    function changeColor(){
+        if(h1.style.color == 'black'){
+            h1.style.color = 'red';
+        }else{
+            h1.style.color ='black';
+        }
+    }
+
+   var intStop = setInterval(changeColor, 500);
+
+    // типы диалоговых окон
+
+    // alert();
+    //confirm(); // показывает две кнопки: ок (true) и cancel (false) и возвращает значения с этих кнопок
+    //prompt(); // выводит сообщения и ждет текста от пользователя и возвращает текст в виде значения
+
+    // do{
+    //     var str = prompt(' введите сообщение ');
+    //
+    //     var result = confirm(' вы ввели ' + str + '. нажмите на ок для продолжения или cancel для повтора');
+    // }
+    // while(!result);
+    //
+    // alert(str);
+}
+
+
+
